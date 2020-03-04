@@ -22,7 +22,7 @@ def print_menu() -> None:
           '1. Encrypt\n'
           '2. Decrypt\n'
           '3. Open save file folder\n'
-          f'4. Toggle prettify XML after decrypt [Current: {"ON" if prettify_xml else "OFF"}]\n')
+          f'4. Toggle prettify XML after decrypt [Current: {"ON" if prettify_xml else "OFF"}]')
 
 
 def xor_bytes(data: bytes, value: int) -> bytes:
@@ -33,6 +33,7 @@ if __name__ == '__main__':
     print_menu()
 
     while True:
+        print()
         s = input('>>> ')
         print()
 
@@ -103,4 +104,3 @@ if __name__ == '__main__':
             print_menu()
         else:
             sys.exit()
-        print()
