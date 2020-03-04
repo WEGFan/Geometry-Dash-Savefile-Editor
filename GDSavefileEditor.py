@@ -17,7 +17,7 @@ def print_menu() -> None:
     os.system('cls')
     print('Geometry Dash Savefile Encrypter & Decrypter\n'
           '\n'
-          'Decryption code was download from https://pastebin.com/JakxXUVG by Absolute Gamer\n'
+          'Decryption code downloaded from https://pastebin.com/JakxXUVG by Absolute Gamer\n'
           '\n'
           '1. Encrypt\n'
           '2. Decrypt\n'
