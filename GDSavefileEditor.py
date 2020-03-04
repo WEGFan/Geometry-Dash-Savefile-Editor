@@ -4,7 +4,6 @@ import os
 import struct
 import sys
 import traceback
-import xml
 import zlib
 from xml.dom import minidom
 
