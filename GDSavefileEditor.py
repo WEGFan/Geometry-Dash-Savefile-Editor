@@ -53,7 +53,9 @@ if __name__ == '__main__':
                     data_crc32 = zlib.crc32(decrypted_data)
                     data_size = len(decrypted_data)
 
-                    compressed_data = b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x0b' + compressed_data[2:-4] + struct.pack('I I', data_crc32, data_size)
+                    compressed_data = (b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x0b' +  # gzip header
+                                       compressed_data[2:-4] +
+                                       struct.pack('I I', data_crc32, data_size))
                     encoded_data = base64.b64encode(compressed_data, altchars=b'-_')
                     encrypted_data = xor_bytes(encoded_data, 11)
 
@@ -62,7 +64,7 @@ if __name__ == '__main__':
 
                     print('Done!')
                 except FileNotFoundError as err:
-                    print(f'Can\'t find {save_file}.xml in current folder!')
+                    print(f"Can't find {save_file}.xml in current folder!")
                 except Exception as err:
                     print(f'Failed to encrypt {save_file}.xml!')
                     traceback.print_exc()
@@ -90,7 +92,7 @@ if __name__ == '__main__':
 
                     print('Done!')
                 except FileNotFoundError as err:
-                    print(f'Can\'t find {save_file}.xml in save file folder!')
+                    print(f"Can't find {save_file}.xml in save file folder!")
                 except Exception as err:
                     print(f'Failed to decrypt {save_file}!')
                     traceback.print_exc()
