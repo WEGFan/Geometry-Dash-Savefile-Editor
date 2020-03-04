@@ -7,6 +7,8 @@ import traceback
 import zlib
 from xml.dom import minidom
 
+__version__ = '1.1.2'
+
 SAVE_FILE_NAME = ['CCGameManager.dat', 'CCLocalLevels.dat']
 SAVE_FILE_PATH = os.path.join(os.getenv('LocalAppData'), 'GeometryDash')
 
@@ -15,7 +17,7 @@ prettify_xml = False
 
 def print_menu() -> None:
     os.system('cls')
-    print('Geometry Dash Savefile Encrypter & Decrypter\n'
+    print(f'Geometry Dash Savefile Encrypter & Decrypter v{__version__} by WEGFan\n'
           '\n'
           'Decryption code downloaded from https://pastebin.com/JakxXUVG by Absolute Gamer\n'
           '\n'
