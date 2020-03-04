@@ -29,7 +29,8 @@ def xor_bytes(data: bytes, value: int) -> bytes:
     return bytes(map(lambda x: x ^ value, data))
 
 
-if __name__ == '__main__':
+def main():
+    global prettify_xml
     print_menu()
 
     while True:
@@ -104,3 +105,10 @@ if __name__ == '__main__':
             print_menu()
         else:
             sys.exit()
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except (EOFError, KeyboardInterrupt) as err:
+        sys.exit()
