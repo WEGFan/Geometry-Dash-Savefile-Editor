@@ -2,6 +2,7 @@
 import base64
 import os
 import struct
+import sys
 import traceback
 import xml
 import zlib
@@ -39,7 +40,7 @@ if __name__ == '__main__':
         try:
             index = int(s)
         except ValueError as err:
-            exit()
+            sys.exit()
 
         if index == 1:  # encrypt
             for save_file in SAVE_FILE_NAME:
@@ -102,5 +103,5 @@ if __name__ == '__main__':
             prettify_xml = not prettify_xml
             print_menu()
         else:
-            exit()
+            sys.exit()
         print()
