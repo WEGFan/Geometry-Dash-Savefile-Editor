@@ -5,26 +5,62 @@ import struct
 import sys
 import traceback
 import zlib
+import platform
 from xml.dom import minidom
 
-__version__ = '1.1.2'
+__version__ = '1.1.3'
 
 SAVE_FILE_NAME = ['CCGameManager.dat', 'CCLocalLevels.dat']
-SAVE_FILE_PATH = os.path.join(os.getenv('LocalAppData'), 'GeometryDash')
+SAVE_FILE_PATH = None
+
+def set_save_directory():
+    global SAVE_FILE_PATH
+    while True:
+        path = input("Enter save directory: ")
+        if os.path.isdir(path):
+            SAVE_FILE_PATH = path
+            return
+        else:
+            print("Invalid directory!")
+
+def find_save_directory():
+    global SAVE_FILE_PATH
+    path = None
+    if platform.system() == 'Windows':
+        if os.path.isdir(os.path.join(os.getenv('LocalAppData'), 'GeometryDash')):
+            path = os.path.join(os.getenv('LocalAppData'), 'GeometryDash')
+    elif platform.system() == 'Linux':
+        if os.path.isdir(os.path.join(os.getenv("HOME"), ".steam/steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash")):
+            path = os.path.join(os.getenv("HOME"), ".steam/steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash")
+        elif os.path.isdir(os.path.join(os.getenv("HOME"), ".local/share/Steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash")):
+            path = os.path.join(os.getenv("HOME"), ".local/share/Steam/steamapps/compatdata/322170/pfx/drive_c/users/steamuser/AppData/Local/GeometryDash")
+    if type(path) is str:
+        SAVE_FILE_PATH = path
+        return
+    else:
+        print("Could not find Geometry Dash save directory!\n"
+              "You will need to enter the path manually.")
+        set_save_directory()
+        return
+
+find_save_directory()
 
 prettify_xml = False
 
-
 def print_menu() -> None:
-    os.system('cls')
+    os.system('cls' if platform.system() == 'Windows' else 'clear')
     print(f'Geometry Dash Savefile Encrypter & Decrypter v{__version__} by WEGFan\n'
           '\n'
           'Decryption code downloaded from https://pastebin.com/JakxXUVG by Absolute Gamer\n'
           '\n'
+          f'Save directory: {os.path.realpath(SAVE_FILE_PATH)}\n'
+          '\n'
           '1. Encrypt\n'
           '2. Decrypt\n'
           '3. Open save file folder\n'
-          f'4. Toggle prettify XML after decrypt [Current: {"ON" if prettify_xml else "OFF"}]')
+          f'4. Toggle prettify XML after decrypt [Current: {"ON" if prettify_xml else "OFF"}]\n'
+          '5. Change save directory'
+          '\n')
 
 
 def xor_bytes(data: bytes, value: int) -> bytes:
@@ -36,9 +72,7 @@ def main():
     print_menu()
 
     while True:
-        print()
         s = input('>>> ')
-        print()
 
         try:
             index = int(s)
@@ -101,9 +135,15 @@ def main():
                     print(f'Failed to decrypt {save_file}!')
                     traceback.print_exc()
         elif index == 3:  # open save file folder
-            os.startfile(SAVE_FILE_PATH)
+            if platform.system() == 'Windows':
+                os.startfile(SAVE_FILE_PATH)
+            elif platform.system() == 'Linux':
+                os.system("xdg-open '"+SAVE_FILE_PATH+"'")
         elif index == 4:  # toggle pretty xml
             prettify_xml = not prettify_xml
+            print_menu()
+        elif index == 5:  # change save directory
+            set_save_directory()
             print_menu()
         else:
             sys.exit()
