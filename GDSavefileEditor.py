@@ -80,7 +80,7 @@ def main():
                     with open(os.path.join(SAVE_FILE_PATH, save_file), 'rb') as f:
                         encrypted_data = f.read()
 
-                    decrypted_data = xor_bytes(encrypted_data, 11)
+                    decrypted_data = xor_bytes(encrypted_data[:len(encrypted_data) // 4 * 4], 11)
                     decoded_data = base64.b64decode(decrypted_data, altchars=b'-_')
                     decompressed_data = zlib.decompress(decoded_data[10:], -zlib.MAX_WBITS)
 
